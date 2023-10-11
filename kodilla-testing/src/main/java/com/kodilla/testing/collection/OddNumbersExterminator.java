@@ -11,6 +11,7 @@ public class OddNumbersExterminator {
                 listWithoutOddNumbers.add(numbers.get(i));
             }
         }
+
         return listWithoutOddNumbers;
     }
 }
