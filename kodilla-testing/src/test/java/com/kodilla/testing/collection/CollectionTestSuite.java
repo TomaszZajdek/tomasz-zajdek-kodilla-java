@@ -40,6 +40,7 @@ public class CollectionTestSuite {
         //When
         List<Integer> evenNumbers = oddNumbersExterminator.exterminate(numbers);
         System.out.println("Testing " + evenNumbers);
+        //Testing
         Assertions.assertEquals(expectedEvenNumbers, evenNumbers);
     }
 }
