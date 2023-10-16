@@ -1,5 +1,8 @@
 package com.kodilla.testing.forum.statistics;
 
+import com.kodilla.testing.forum.ForumComment;
+import com.kodilla.testing.forum.ForumPost;
+import com.kodilla.testing.forum.ForumUser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,8 +20,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class ForumStatisticsTestSuite {
     @Mock
-        private Statistics statisticsMock;
-        private ForumStatistics forumStatistics;
+    private Statistics statisticsMock;
+    private ForumStatistics forumStatistics;
 
     @BeforeEach
     public void setUpForumUser() {
@@ -35,8 +38,8 @@ public class ForumStatisticsTestSuite {
     @Test
     void testCalculateAdvStatisticsZeroPosts() {
         //Given
-        int postsNumber = 0;
-        when(statisticsMock.postsCount()).thenReturn(postsNumber);
+        ForumUser forumUser = new ForumUser("s","Stefan");
+        when(statisticsMock.postsCount()).thenReturn(forumUser.getPostsQuantity());
         //When
         forumStatistics.calculateAdvStatistics(statisticsMock);
         //Then
@@ -46,8 +49,11 @@ public class ForumStatisticsTestSuite {
     @Test
     void testCalculateAdvStatisticsThousandPosts() {
         //Given
-        int postsNumber = 1000;
-        when(statisticsMock.postsCount()).thenReturn(postsNumber);
+        ForumUser forumUser = new ForumUser("s","Stefan");
+        for(int i = 0; i < 1000; i++) {
+            forumUser.addPost("Stefan", "P"+i);
+        }
+        when(statisticsMock.postsCount()).thenReturn(forumUser.getPostsQuantity());
         //When
         forumStatistics.calculateAdvStatistics(statisticsMock);
         //Then
@@ -56,8 +62,8 @@ public class ForumStatisticsTestSuite {
     @Test
     void testCalculateAdvStatisticsZeroComments() {
         //Given
-        int commentsNum = 0;
-        when(statisticsMock.commentsCount()).thenReturn(commentsNum);
+        ForumUser forumUser = new ForumUser("s","Stefan");
+        when(statisticsMock.commentsCount()).thenReturn(forumUser.getCommentsQuantity());
         //When
         forumStatistics.calculateAdvStatistics(statisticsMock);
         //Then
@@ -66,10 +72,16 @@ public class ForumStatisticsTestSuite {
     @Test
     void testCalculateAdvStatisticsLessCommentsThenPosts() {
         //Given
-        int postsNum = 154;
-        int commentsNum = 143;
-        when(statisticsMock.commentsCount()).thenReturn(commentsNum);
-        when(statisticsMock.postsCount()).thenReturn(postsNum);
+        ForumUser forumUser = new ForumUser("s","Stefan");
+        ForumPost forumPost = new ForumPost("ss","ss");
+        for(int i = 0; i < 154; i++) {
+            forumUser.addPost("Stefan", "P"+i);
+        }
+        for(int i = 0; i < 153; i++) {
+            forumUser.addComment(forumPost, "ss","ssss");
+        }
+        when(statisticsMock.commentsCount()).thenReturn(forumUser.getCommentsQuantity());
+        when(statisticsMock.postsCount()).thenReturn(forumUser.getPostsQuantity());
         //When
         forumStatistics.calculateAdvStatistics(statisticsMock);
         //Then
@@ -79,14 +91,21 @@ public class ForumStatisticsTestSuite {
     @Test
     void testCalculateAdvStatisticsMoreCommentsThanPosts() {
         //Given
-        int postNum = 100;
-        int commentsNum = 444;
-        when(statisticsMock.postsCount()).thenReturn(postNum);
-        when(statisticsMock.commentsCount()).thenReturn(commentsNum);
+        ForumUser forumUser = new ForumUser("s","Stefan");
+        ForumPost forumPost = new ForumPost("ss","ss");
+        for(int i = 0; i < 152; i++) {
+            forumUser.addPost("Stefan", "P"+i);
+        }
+        for(int i = 0; i < 153; i++) {
+            forumUser.addComment(forumPost, "ss","ssss");
+        }
+        when(statisticsMock.commentsCount()).thenReturn(forumUser.getCommentsQuantity());
+        when(statisticsMock.postsCount()).thenReturn(forumUser.getPostsQuantity());
         //When
         forumStatistics.calculateAdvStatistics(statisticsMock);
         //Then
         Assertions.assertTrue(forumStatistics.getAverageCommentsPerPost() > 1);
+
     }
     @Test
     void testCalculateAdvStatisticsZeroUsers() {
@@ -99,7 +118,7 @@ public class ForumStatisticsTestSuite {
         Assertions.assertEquals(0, forumStatistics.getUsersNumber());
     }
     @Test
-        void  testCalculateAdvStatisticsHundredUsers() {
+    void  testCalculateAdvStatisticsHundredUsers() {
         //Given
         List<String> usersList = generateUsersList(100);
         when(statisticsMock.usersNames()).thenReturn(usersList);

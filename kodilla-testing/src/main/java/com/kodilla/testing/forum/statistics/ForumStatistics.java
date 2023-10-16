@@ -36,17 +36,17 @@ public class ForumStatistics {
         usersNumber = statistics.usersNames().size();
         commentsNumber = statistics.commentsCount();
         if (statistics.postsCount() != 0) {
-            averageCommentsPerPost = statistics.commentsCount() / statistics.postsCount();
+            averageCommentsPerPost =(double) commentsNumber / postsNumber;
         } else {
             averageCommentsPerPost = 0;
         }
         if (statistics.usersNames().size() != 0) {
-            averageCommentsPerUser = statistics.commentsCount() / statistics.usersNames().size();
+            averageCommentsPerUser =(double) commentsNumber / usersNumber;
         } else {
             averageCommentsPerUser = 0;
         }
         if (statistics.usersNames().size() != 0) {
-            averagePostsPerUser = statistics.postsCount() / statistics.usersNames().size();
+            averagePostsPerUser = (double) postsNumber / usersNumber;
         } else {
             averagePostsPerUser = 0;
         }
