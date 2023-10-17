@@ -28,10 +28,10 @@ public class ForumStatisticsTestSuite {
         forumStatistics = new ForumStatistics();
     }
 
-    private List<String> generateUsersList(int usersQuantity) {
-        List<String> listOfUsers = new ArrayList<>();
+    private List<ForumUser> generateUsersList(int usersQuantity) {
+        List<ForumUser> listOfUsers = new ArrayList<>();
         for(int i = 1; i <= usersQuantity; i++) {
-            listOfUsers.add("Adam" + i);
+            listOfUsers.add(new ForumUser("Adam" + i, "Adam"));
         }
         return listOfUsers;
     }
@@ -110,8 +110,12 @@ public class ForumStatisticsTestSuite {
     @Test
     void testCalculateAdvStatisticsZeroUsers() {
         //Given
-        List<String> usersList = generateUsersList(0);
-        when(statisticsMock.usersNames()).thenReturn(usersList);
+        List<ForumUser> usersList = generateUsersList(0);
+        List<String> userNames = new ArrayList<>();
+        for(int i = 0; i < usersList.size(); i++) {
+            userNames.add(usersList.get(i).getName());
+        }
+        when(statisticsMock.usersNames()).thenReturn(userNames);
         //When
         forumStatistics.calculateAdvStatistics(statisticsMock);
         //Then
@@ -120,8 +124,12 @@ public class ForumStatisticsTestSuite {
     @Test
     void  testCalculateAdvStatisticsHundredUsers() {
         //Given
-        List<String> usersList = generateUsersList(100);
-        when(statisticsMock.usersNames()).thenReturn(usersList);
+        List<ForumUser> usersList = generateUsersList(100);
+        List<String> userNames = new ArrayList<>();
+        for(int i = 0; i < usersList.size(); i++) {
+            userNames.add(usersList.get(i).getName());
+        }
+        when(statisticsMock.usersNames()).thenReturn(userNames);
         //When
         forumStatistics.calculateAdvStatistics(statisticsMock);
         //Then
