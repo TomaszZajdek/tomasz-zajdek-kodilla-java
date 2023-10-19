@@ -1,2 +1,23 @@
-package com.kodilla.stream.world;public class Continent {
+package com.kodilla.stream.world;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Continent {
+    private String name;
+    private List<Country> countries = new ArrayList<>();
+
+    public Continent(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public List<Country> getCountries() {
+        return countries;
+    }
+    public void addCountry(Country country) {
+        countries.add(country);
+    }
 }
