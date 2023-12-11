@@ -27,4 +27,8 @@ class MovieStore {
                 .flatMap(List::stream)
                 .collect(Collectors.joining("!"));
     }
+    public static void main(String[] args) {
+        MovieStore movieStore = new MovieStore();
+        System.out.println(movieStore.getAllTittles());
+    }
 }
