@@ -4,7 +4,7 @@ import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "TASKLIST1")
 @Table(name = "TASKLISTS")
 public class TaskList {
     private int id;
