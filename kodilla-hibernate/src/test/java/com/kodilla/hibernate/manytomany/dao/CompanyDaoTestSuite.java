@@ -5,14 +5,20 @@ import com.kodilla.hibernate.manytomany.Employee;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 class CompanyDaoTestSuite {
 
     @Autowired
     private CompanyDao companyDao;
+    @Autowired
+    private EmployeeDao employeeDao;
 
     @Test
     void testSaveManyToMany() {
@@ -59,5 +65,50 @@ class CompanyDaoTestSuite {
             //do nothing
 
         }
+    }
+    @Test
+    void testRetrievingEmployeesByLastname() {
+        //given
+        Employee employee1 = new Employee("Karl", "Nokicho");
+        Employee employee2 = new Employee("Tom", "Tenzo");
+        Employee employee3 = new Employee("Jan", "Tenzo");
+
+        //when
+        employeeDao.save(employee1);
+        employeeDao.save(employee2);
+        employeeDao.save(employee3);
+        List<Employee> benzEmployee = employeeDao.retrieveLastnameEmployees("Tenzo");
+
+        //then
+        assertTrue(benzEmployee.contains(employee3));
+        assertTrue(benzEmployee.contains(employee2));
+        assertEquals(2, benzEmployee.size());
+        //cleanUp
+        employeeDao.deleteById(employee1.getId());
+        employeeDao.deleteById(employee2.getId());
+        employeeDao.deleteById(employee3.getId());
+
+    }
+    @Test
+    void testRetrievingCompaniesWithNameStartingWith() {
+        //given
+        Company company1 = new Company("AZBEST");
+        Company company2 = new Company("YYYEN");
+        Company company3 = new Company("YYYIKI");
+
+        //when
+        companyDao.save(company1);
+        companyDao.save(company2);
+        companyDao.save(company3);
+        List<Company> companyStartingWithORLLetters = companyDao.retrieveCompaniesWithNamesStartingWith("YYY");
+        //then
+        assertEquals(2, companyStartingWithORLLetters.size());
+        assertTrue(companyStartingWithORLLetters.contains(company2));
+        assertTrue(companyStartingWithORLLetters.contains(company3));
+        //cleanUp
+        companyDao.deleteById(company1.getId());
+        companyDao.deleteById(company2.getId());
+        companyDao.deleteById(company3.getId());
+
     }
 }
